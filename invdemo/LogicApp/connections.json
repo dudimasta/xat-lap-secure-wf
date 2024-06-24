@@ -1,0 +1,15 @@
+{
+  "managedApiConnections": {},
+  "serviceProviderConnections": {
+    "AzureFile": {
+      "parameterValues": {
+        "connectionString": "@appsetting('AzureFile_connectionString')"
+      },
+      "parameterSetName": "connectionString",
+      "serviceProvider": {
+        "id": "/serviceProviders/AzureFile"
+      },
+      "displayName": "AzureFile-1"
+    }
+  }
+}

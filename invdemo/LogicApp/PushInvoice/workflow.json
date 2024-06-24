@@ -1,0 +1,76 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "actions": {
+            "Call_a_local_function_in_this_logic_app": {
+                "type": "InvokeFunction",
+                "inputs": {
+                    "functionName": "ProduceInvoice",
+                    "parameters": {
+                        "num": 1
+                    }
+                },
+                "runAfter": {}
+            },
+            "Response": {
+                "type": "Response",
+                "kind": "http",
+                "inputs": {
+                    "statusCode": 200,
+                    "body": "@body('Call_a_local_function_in_this_logic_app')"
+                },
+                "runAfter": {
+                    "Call_a_local_function_in_this_logic_app": [
+                        "Succeeded"
+                    ]
+                }
+            },
+            "init_var_fileName": {
+                "type": "InitializeVariable",
+                "inputs": {
+                    "variables": [
+                        {
+                            "name": "var_fileName",
+                            "type": "string",
+                            "value": "@body('Call_a_local_function_in_this_logic_app')?['FileName']"
+                        }
+                    ]
+                },
+                "runAfter": {
+                    "Response": [
+                        "SUCCEEDED"
+                    ]
+                }
+            },
+            "Create_file": {
+                "type": "ServiceProvider",
+                "inputs": {
+                    "parameters": {
+                        "folderPath": "sec-wf-file-share",
+                        "fileName": "@concat('invoices/incoming/', variables('var_fileName'))",
+                        "fileContent": "@body('Call_a_local_function_in_this_logic_app')?['InvoiceInXml']"
+                    },
+                    "serviceProviderConfiguration": {
+                        "connectionName": "AzureFile",
+                        "operationId": "createFile",
+                        "serviceProviderId": "/serviceProviders/AzureFile"
+                    }
+                },
+                "runAfter": {
+                    "init_var_fileName": [
+                        "SUCCEEDED"
+                    ]
+                }
+            }
+        },
+        "triggers": {
+            "When_a_HTTP_request_is_received": {
+                "type": "Request",
+                "kind": "Http"
+            }
+        },
+        "contentVersion": "1.0.0.0",
+        "outputs": {}
+    },
+    "kind": "Stateful"
+}

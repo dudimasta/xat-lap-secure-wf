@@ -1,0 +1,67 @@
+{
+  "Name": "TestRdu",
+  "ScriptFile": "ProduceInvoice.dll",
+  "FunctionDirectory": null,
+  "EntryPoint": "xat.InvUtils.TestRdu.Run",
+  "Language": "net8",
+  "Properties": {},
+  "Bindings": [
+    {
+      "Name": "zipCode",
+      "Connection": null,
+      "Type": "workflowActionTrigger",
+      "Properties": {},
+      "Direction": "In",
+      "DataType": null,
+      "Cardinality": null,
+      "IsTrigger": true,
+      "IsReturn": false,
+      "Raw": null
+    }
+  ],
+  "InputBindings": [
+    {
+      "Name": "zipCode",
+      "Connection": null,
+      "Type": "workflowActionTrigger",
+      "Properties": {},
+      "Direction": "In",
+      "DataType": null,
+      "Cardinality": null,
+      "IsTrigger": true,
+      "IsReturn": false,
+      "Raw": null
+    }
+  ],
+  "OutputBindings": [],
+  "Trigger": {
+    "Name": "zipCode",
+    "Connection": null,
+    "Type": "workflowActionTrigger",
+    "Properties": {},
+    "Direction": "In",
+    "DataType": null,
+    "Cardinality": null,
+    "IsTrigger": true,
+    "IsReturn": false,
+    "Raw": null
+  },
+  "InputSchema": {
+    "type": "object",
+    "properties": {
+      "zipCode": {
+        "type": "integer"
+      },
+      "temperatureScale": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "zipCode",
+      "temperatureScale"
+    ]
+  },
+  "OutputSchema": {
+    "type": "string"
+  }
+}

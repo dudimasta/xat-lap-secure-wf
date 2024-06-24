@@ -1,0 +1,13 @@
+D:\GitHub\xat-lap-secure-wf\invdemo\Function\bin\Debug\net8\ProduceInvoice.deps.json
+D:\GitHub\xat-lap-secure-wf\invdemo\Function\bin\Debug\net8\ProduceInvoice.dll
+D:\GitHub\xat-lap-secure-wf\invdemo\Function\bin\Debug\net8\ProduceInvoice.pdb
+D:\GitHub\xat-lap-secure-wf\invdemo\Function\obj\Debug\net8\ProduceInvoice.csproj.AssemblyReference.cache
+D:\GitHub\xat-lap-secure-wf\invdemo\Function\obj\Debug\net8\ProduceInvoice.GeneratedMSBuildEditorConfig.editorconfig
+D:\GitHub\xat-lap-secure-wf\invdemo\Function\obj\Debug\net8\ProduceInvoice.AssemblyInfoInputs.cache
+D:\GitHub\xat-lap-secure-wf\invdemo\Function\obj\Debug\net8\ProduceInvoice.AssemblyInfo.cs
+D:\GitHub\xat-lap-secure-wf\invdemo\Function\obj\Debug\net8\ProduceInvoice.csproj.CoreCompileInputs.cache
+D:\GitHub\xat-lap-secure-wf\invdemo\Function\obj\Debug\net8\ProduceInvoice.sourcelink.json
+D:\GitHub\xat-lap-secure-wf\invdemo\Function\obj\Debug\net8\ProduceInvoice.dll
+D:\GitHub\xat-lap-secure-wf\invdemo\Function\obj\Debug\net8\refint\ProduceInvoice.dll
+D:\GitHub\xat-lap-secure-wf\invdemo\Function\obj\Debug\net8\ProduceInvoice.pdb
+D:\GitHub\xat-lap-secure-wf\invdemo\Function\obj\Debug\net8\ref\ProduceInvoice.dll
