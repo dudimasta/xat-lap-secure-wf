@@ -96,6 +96,12 @@
           "null"
         ],
         "properties": {
+          "line_num": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
           "item_id": {
             "type": [
               "string",
@@ -110,6 +116,7 @@
           }
         },
         "required": [
+          "line_num",
           "item_id",
           "line_amount",
           "line_discout"

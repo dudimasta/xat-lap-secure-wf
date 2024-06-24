@@ -65,6 +65,7 @@ namespace xat.InvUtils
 
   public class InvoiceLine
   {
+    public string line_num {get; set; }
     public string item_id { get; set; }
     public double line_amount { get; set; }
     public double line_discout { get; set; }
@@ -91,15 +92,20 @@ namespace xat.InvUtils
       // add some lines to the invoice
       List<InvoiceLine> lines = invoice.InvoiceLines;
 
-      for (int __i = new System.Random().Next(2, 10); __i > 0; __i--)
+      int linesToGen = new System.Random().Next(2, 10);
+
+      for (int __i = 1; __i <= linesToGen; __i++)
       {
 
-        InvoiceLine line = new InvoiceLine();
-        line.item_id = __i.ToString();
-        line.line_amount = new System.Random().Next(1000, 500000);
+        InvoiceLine line = new()
+        {
+          line_num = __i.ToString(),
+          item_id = "product_" + new System.Random().Next(1000, 9999).ToString(),
+          line_amount = new System.Random().Next(1000, 500000)
+        };
 
         // procent rabatu losujemy od 5 do 20 od kwoty linii
-        line.line_discout = (line.line_amount * new System.Random().Next(5, 20)) / 100;
+        line.line_discout = line.line_amount * new System.Random().Next(5, 20) / 100;
         lines.Add(line);
       }
 
