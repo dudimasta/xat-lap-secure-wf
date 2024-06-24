@@ -1,6 +1,5 @@
 
-# Azure Functions artifacts
-lib
+lib/
 appsettings.json
 local.settings.json
 __blobstorage__
