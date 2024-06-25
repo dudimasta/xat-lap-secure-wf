@@ -1,0 +1,38 @@
+trigger: none
+
+pr: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+- template: CD-pipeline-variables.yml
+
+resources:
+  pipelines:
+  - pipeline: cipipeline
+    # TODO: Update with the name of your CI pipeline
+    source: CI Pipeline
+    trigger:
+      branches:
+      - main
+
+jobs:
+- deployment: deploy_logicapp_resources
+  displayName: Deploy Logic App
+  environment: $(logicAppEnvironment)
+  variables:
+    deploymentMode: 'Incremental'
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - task: AzureLogicAppsStandardRelease@0
+          displayName: 'Azure Logic Apps Standard Release'
+          inputs:
+            connectedServiceName: '$(serviceConnectionName)'
+            appName: '$(logicAppName)'
+            resourceGroupName: '$(resourceGroupName)'
+            appSettings: |
+              []
+            package: '$(Pipeline.Workspace)/cipipeline/$(logicAppCIArtifactName)/$(resources.pipeline.cipipeline.runID).zip'

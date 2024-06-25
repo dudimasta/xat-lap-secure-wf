@@ -1,6 +1,10 @@
 {
   "folders": [
     {
+      "name": "deployment",
+      "path": "deployment"
+    },
+    {
       "name": "Functions",
       "path": "./Function"
     },
@@ -16,6 +20,7 @@
     "omnisharp.dotNetCliPaths": [
       "C:\\Users\\rdudzinski\\.azurelogicapps\\dependencies\\DotNetSDK"
     ],
-    "azurite.location": "C:\\Users\\rdudzinski\\.azurelogicapps\\.azurite"
+    "azurite.location": "C:\\Users\\rdudzinski\\.azurelogicapps\\.azurite",
+    "debug.internalConsoleOptions": "neverOpen"
   }
 }

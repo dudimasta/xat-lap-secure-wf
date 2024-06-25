@@ -14,11 +14,16 @@ i zapisuje je do Azure Event Grida
 - użycie map w Logic Apps
 - użycie XSLT w Logic Apps
 - użycie schematów w Logic Apps
+- Aby budować funkcje lub nowe workflowy w tej bibliotece, należy otworzyć workspace [root git folder]/invdemo/invdemo.code-workspace
 
 ## Po kolei:
 - w tym scenariuszy pracujesz z VSC, które jest uruchomione na Windowsie (nie w kontenerze)
 - zainstaluj rozszerzenia <b>Azure Logic Apps (Standard)</b>. Zrestartuj (ze dwa razy :-)) VSC
-- upewnij się, że subskrypcja, do której będziesz wykonywać deploy funkcji w Resource Providerach ma włączone rozszerzenie 
+- w subskrypcji włączyć provider 'Microsoft.OperationalInsights'
+- Sometimes VS Code will want you to install a C# Dev Kit. If this has been installed, please remove it from the extensions. When C# Dev Kit is installed, it will add ".sln" files to your code project.  Delete these files as they can mess with the build tasks.
+- We have seen a couple situations where the APP_KIND isn't set. It should be set to workflowApp. You can find this setting in the Environment variables section. Set as follows:
+    - APP_KIND: workflowApp
+
 
 ### Workflowy w LogicApps
 - Źródła:
@@ -26,3 +31,4 @@ i zapisuje je do Azure Event Grida
     - https://learn.microsoft.com/en-us/azure/logic-apps/create-maps-data-transformation-visual-studio-code
     - https://learn.microsoft.com/en-us/azure/logic-apps/add-run-csharp-scripts
     - https://learn.microsoft.com/en-us/azure/logic-apps/create-run-custom-code-functions
+    - custom C# code (net 472): https://techcommunity.microsoft.com/t5/azure-integration-services-blog/announcement-introducing-net-framework-custom-code-for-azure/ba-p/3847711

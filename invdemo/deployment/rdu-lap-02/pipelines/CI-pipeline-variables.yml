@@ -1,0 +1,9 @@
+# CI pipeline variables
+
+variables:
+
+  #  Logic App
+  logicAppName: 'rdu-lap-02'
+
+  # Project artifacts
+  logicAppCIArtifactName: 'rdu-lap-02_publish_artifact_ci'

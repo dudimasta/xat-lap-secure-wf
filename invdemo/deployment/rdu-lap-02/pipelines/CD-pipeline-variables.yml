@@ -1,0 +1,24 @@
+# CD pipeline variables
+
+variables:
+
+  # Your Azure service connection
+  serviceConnectionName: ''
+
+  # Logic App deploy environment
+  logicAppEnvironment: 'dev'
+
+  # Subscription
+  subscriptionId: 'de47847e-1e04-4c18-99de-a11f659d3119'
+
+  # Resource Group location
+  resourceGroupLocation: 'polandcentral'
+  
+  #  Logic App
+  logicAppName: 'rdu-lap-02'
+
+  #  Logic App Resource Group
+  resourceGroupName: 'sec-wf-workflow-rg'
+
+  # Project artifacts
+  logicAppCIArtifactName: 'rdu-lap-02_publish_artifact_ci'

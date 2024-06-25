@@ -1,0 +1,67 @@
+trigger: none
+
+pr: none
+
+variables:
+- template: infrastructure-pipeline-variables.yml
+
+stages:
+- stage: Builds
+  displayName: 'Publish IaC Artifacts'
+  jobs:
+  - job: Build
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - task: CopyFiles@2
+      displayName: 'Copy ARM templates'
+      inputs:
+        sourceFolder: '$(System.DefaultWorkingDirectory)/deployment/$(logicAppName)/infrastructure'
+        targetFolder: '$(Build.ArtifactStagingDirectory)'
+    - publish: '$(Build.ArtifactStagingDirectory)'
+      artifact: '$(logicAppIaCArtifactName)'
+
+- stage: Deployment
+  displayName: 'Logic App Infrastructure Deployment'
+  jobs:
+  - deployment: deploy_logicapp_resources
+    displayName: Deploy Logic App Resources
+    pool:
+      vmImage: ubuntu-latest
+    environment: $(logicAppEnvironment)
+    variables:
+      deploymentMode: 'Incremental'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: '$(logicAppIaCArtifactName)'
+
+          - task: AzureResourceGroupDeployment@2
+            displayName: 'Deploy Logic App'
+            inputs:
+              azureSubscription: '$(serviceConnectionName)'
+              resourceGroupName: '$(resourceGroupName)'
+              location: '$(resourceGroupLocation)'
+              csmFile: '$(Pipeline.Workspace)/$(logicAppIaCArtifactName)/$(logicAppName).template.json'
+              csmParametersFile: '$(Pipeline.Workspace)/$(logicAppIaCArtifactName)/$(logicAppName).parameters.json'
+              overrideParameters: '
+                -subscriptionId $(subscriptionId)
+                -name $(logicAppName)
+                -location $(resourceGroupLocation)
+                -hostingPlanName $(appServicePlanName)
+                -hostingPlanResourceGroup $(resourceGroupName)
+                -storageAccountName $(storageAccountName)'
+              deploymentMode: $(deploymentMode)
+              deploymentOutputs: 'LogicAppArmOutputs'
+
+          - task: AzureLogicAppsStandardConnectionsDeployment@0
+            displayName: 'Deploy Azure Logic Apps Standard Connections'
+            inputs:
+              connectedServiceName: '$(serviceConnectionName)'
+              subscriptionId: '$(subscriptionId)'
+              appName: '$(logicAppName)'
+              resourceGroupName: '$(resourceGroupName)'
+              location: '$(resourceGroupLocation)'
+              armTemplatePath: '$(Pipeline.Workspace)/$(logicAppIaCArtifactName)'
