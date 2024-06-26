@@ -77,7 +77,7 @@ namespace xat.InvUtils
     {
       string guidbuf = System.Guid.NewGuid().ToString();
 
-      string[] theArray = guidbuf.Split("-");
+      string[] theArray = guidbuf.Split('-');
 
 
       Invoice invoice = new Invoice();
@@ -97,7 +97,7 @@ namespace xat.InvUtils
       for (int __i = 1; __i <= linesToGen; __i++)
       {
 
-        InvoiceLine line = new()
+        InvoiceLine line = new InvoiceLine()
         {
           line_num = __i.ToString(),
           item_id = "product_" + new System.Random().Next(1000, 9999).ToString(),

@@ -12,19 +12,6 @@
                 },
                 "runAfter": {}
             },
-            "Response": {
-                "type": "Response",
-                "kind": "http",
-                "inputs": {
-                    "statusCode": 200,
-                    "body": "@body('Call_a_local_function_in_this_logic_app')"
-                },
-                "runAfter": {
-                    "Call_a_local_function_in_this_logic_app": [
-                        "Succeeded"
-                    ]
-                }
-            },
             "init_var_fileName": {
                 "type": "InitializeVariable",
                 "inputs": {
@@ -37,7 +24,7 @@
                     ]
                 },
                 "runAfter": {
-                    "Response": [
+                    "Call_a_local_function_in_this_logic_app": [
                         "SUCCEEDED"
                     ]
                 }
@@ -58,6 +45,19 @@
                 },
                 "runAfter": {
                     "init_var_fileName": [
+                        "SUCCEEDED"
+                    ]
+                }
+            },
+            "Response": {
+                "type": "Response",
+                "kind": "http",
+                "inputs": {
+                    "statusCode": 200,
+                    "body": "@body('Call_a_local_function_in_this_logic_app')"
+                },
+                "runAfter": {
+                    "Create_file": [
                         "SUCCEEDED"
                     ]
                 }

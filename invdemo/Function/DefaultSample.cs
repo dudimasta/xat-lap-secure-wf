@@ -4,19 +4,19 @@ namespace xat.InvUtils
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Microsoft.Azure.Functions.Extensions.Workflows;
-    using Microsoft.Azure.Functions.Worker;
+    using Microsoft.Azure.WebJobs;
     using Microsoft.Extensions.Logging;
 
     /// <summary>
-    /// Represents the ProduceInvoice flow invoked function.
+    /// Represents the DefaultSample flow invoked function.
     /// </summary>
     public class DefaultSample
     {
-        private readonly ILogger<ProduceInvoice> logger;
+        private readonly ILogger<DefaultSample> logger;
 
         public DefaultSample(ILoggerFactory loggerFactory)
         {
-            logger = loggerFactory.CreateLogger<ProduceInvoice>();
+            logger = loggerFactory.CreateLogger<DefaultSample>();
         }
 
         /// <summary>
@@ -24,10 +24,10 @@ namespace xat.InvUtils
         /// </summary>
         /// <param name="zipCode">The zip code.</param>
         /// <param name="temperatureScale">The temperature scale (e.g., Celsius or Fahrenheit).</param>
-        [Function("DefaultSample")]
+        [FunctionName("DefaultSample")]
         public Task<Weather> Run([WorkflowActionTrigger] int zipCode, string temperatureScale)
         {
-            this.logger.LogInformation("Starting ProduceInvoice with Zip Code: " + zipCode + " and Scale: " + temperatureScale);
+            this.logger.LogInformation("Starting DefaultSample with Zip Code: " + zipCode + " and Scale: " + temperatureScale);
             
             // Generate random temperature within a range based on the temperature scale
             Random rnd = new Random();
@@ -46,10 +46,9 @@ namespace xat.InvUtils
 
             return Task.FromResult(weather);
         }
-        
 
         /// <summary>
-        /// Represents the weather information for ProduceInvoice.
+        /// Represents the weather information for DefaultSample.
         /// </summary>
         public class Weather
         {

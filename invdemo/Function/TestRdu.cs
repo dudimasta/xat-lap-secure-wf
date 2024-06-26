@@ -4,7 +4,7 @@ namespace xat.InvUtils
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Microsoft.Azure.Functions.Extensions.Workflows;
-    using Microsoft.Azure.Functions.Worker;
+    using Microsoft.Azure.WebJobs;
     using Microsoft.Extensions.Logging;
 
     /// <summary>
@@ -24,7 +24,7 @@ namespace xat.InvUtils
         /// </summary>
         /// <param name="zipCode">The zip code.</param>
         /// <param name="temperatureScale">The temperature scale (e.g., Celsius or Fahrenheit).</param>
-        [Function("TestRdu")]
+        [FunctionName("TestRdu")]
         public Task<string> Run([WorkflowActionTrigger] int zipCode, string temperatureScale)
         {
             //this.logger.LogInformation("Starting ProduceInvoice with Zip Code: " + zipCode + " and Scale: " + temperatureScale);

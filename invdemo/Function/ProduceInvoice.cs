@@ -4,7 +4,7 @@ namespace xat.InvUtils
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Microsoft.Azure.Functions.Extensions.Workflows;
-    using Microsoft.Azure.Functions.Worker;
+    using Microsoft.Azure.WebJobs;
     using Microsoft.Extensions.Logging;
 
     /// <summary>
@@ -23,7 +23,7 @@ namespace xat.InvUtils
         /// Executes the logic app workflow.
         /// <param name="num">Integer parameter.</param>
         /// </summary>
-        [Function("ProduceInvoice")]
+        [FunctionName("ProduceInvoice")]
         public Task<InvoiceEnvelope> Run([WorkflowActionTrigger] int num)
         {
             // this.logger.LogInformation("Starting ProduceInvoice with Zip Code: " + zipCode + " );
