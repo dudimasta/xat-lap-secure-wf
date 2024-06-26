@@ -43,6 +43,9 @@ i zapisuje je do Azure Event Grida
 - Spróbuj uruchomić workflow
     - powinien pojawić się błąd przy próbie zapisu pliku. 
     - Teraz należy wpuścić ruch z tej logic apki do Az File (utworzonego w skryptach dostępnych w https://github.com/dudimasta/xat-lap-secure-infra)
+     - TBC
+    
+- po skończeniu testów usuń komponenty z azura
 
 ## Pamiętaj o kosztach
 W momencie pisania tego readme, MS powoli wycofuje consumption plan LogicApps na rzecz Standard Logic Apps. Zresztą tylko w standard LogicApps są zaimplementowane np. wsparcie dla VNetów, private endpointów, czy integracja z App Insights.
