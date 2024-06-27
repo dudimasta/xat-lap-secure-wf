@@ -1,0 +1,15 @@
+<map:Transform xmlns:map="http://schemas.microsoft.com/2010/biztalk/mapping">
+  <map:Properties>
+    <map:Property name="grid" value="16,16"/>
+  </map:Properties>
+  <map:Links>
+    <map:Link Source="/Invoice/account_num" Target="/Invoice/account_num"/>
+    <map:Link Source="/Invoice/is_domestic" Target="/Invoice/is_domestic"/>
+    <map:Link Source="/Invoice/invoice_id" Target="/Invoice/invoice_id"/>
+    <map:Link Source="/Invoice/invoice_date" Target="/Invoice/invoice_date"/>
+    <map:Link Source="/Invoice/InvoiceLines/InvoiceLine/line_num" Target="/Invoice/InvoiceLines/InvoiceLine/line_num"/>
+    <map:Link Source="/Invoice/InvoiceLines/InvoiceLine/item_id" Target="/Invoice/InvoiceLines/InvoiceLine/item_id"/>
+    <map:Link Source="/Invoice/InvoiceLines/InvoiceLine/line_amount" Target="/Invoice/InvoiceLines/InvoiceLine/line_amount"/>
+    <map:Link Source="/Invoice/InvoiceLines/InvoiceLine/line_discout" Target="/Invoice/InvoiceLines/InvoiceLine/line_discout"/>
+  </map:Links>
+</map:Transform>

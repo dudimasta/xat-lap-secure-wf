@@ -15,6 +15,7 @@ i zapisuje je do Azure Event Grida
     - Emulatory usług azurowych - Azurite (Blob Service, Table, Service, Queue Service)
     - uruchamianie i debuggowanie na lokalnej maszynie
 - programowanie rozszerzeń w C# do workflowów uruchomionych w Logic Apps
+    - workfow \invdemo\LogicApp\PushInvoice\workflow.json wykorzystuje niestandardową logikę napisaną w C# w \invdemo\Function\ProduceInvoice.cs
 - użycie map w Logic Apps
 - użycie XSLT w Logic Apps
 - użycie schematów w Logic Apps
@@ -40,12 +41,14 @@ i zapisuje je do Azure Event Grida
 - Sprawdź, że w zmiennych środowiskowych zdeployowanej logi apki masz:
     - APP_KIND: workflowApp
     - AzureFile_connectionString: DefaultEndpointsProtocol=https;AccountName=[nazwa-az-file-storage];AccountKey=[TWÓJ-KLUCZ];EndpointSuffix=core.windows.net
+- W storage Az File załóż strukturę folderów:
+    - /invoices/incoming
 - Spróbuj uruchomić workflow
-    - powinien pojawić się błąd przy próbie zapisu pliku. 
-    - Teraz należy wpuścić ruch z tej logic apki do Az File (utworzonego w skryptach dostępnych w https://github.com/dudimasta/xat-lap-secure-infra)
-     - TBC
+    - powinien pojawić się błąd przy próbie zapisu pliku - W "logu" workflowu krok "Create file" powinien mieć błąd "Forbidden"
+    - Teraz należy wpuścić ruch z tej logic apki do Az File (utworzonego w skryptach dostępnych w https://github.com/dudimasta/xat-lap-secure-infra). Skrypty w Infra tworzą i konfigurują dostęp do Az File z VNetu, który jest stworzony w RG zawierającej LogicApp. Po deploymencie logic apki do Azure, podłącz ją pod VNet w tym celu:
+    - otwórz Logic Apkę w Azure portal > Networking > Outgoing > Vnet integration, wybierz vnet i subnet utworzony przez skrypty z infry. Uruchom WF ponownie i sprawdź, że w Az File masz nowy plik
     
-- po skończeniu testów usuń komponenty z azura
+- !!! po skończeniu testów usuń komponenty z azura !!!
 
 ## Pamiętaj o kosztach
 W momencie pisania tego readme, MS powoli wycofuje consumption plan LogicApps na rzecz Standard Logic Apps. Zresztą tylko w standard LogicApps są zaimplementowane np. wsparcie dla VNetów, private endpointów, czy integracja z App Insights.

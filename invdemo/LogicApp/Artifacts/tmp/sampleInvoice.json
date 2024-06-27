@@ -1,0 +1,35 @@
+{
+    "Invoice": {
+      "account_num": "a825c70c",
+      "is_domestic": true,
+      "invoice_id": "c4c1",
+      "invoice_date": "2024-06-27T13:45:00.6653508+00:00",
+      "InvoiceLines": [
+        {
+          "line_num": 1,
+          "item_id": "product_3720",
+          "line_amount": 151847,
+          "line_discout": 13666.23
+        },
+        {
+          "line_num": 2,
+          "item_id": "product_3720",
+          "line_amount": 151847,
+          "line_discout": 13666.23
+        },
+        {
+          "line_num": 3,
+          "item_id": "product_3720",
+          "line_amount": 151847,
+          "line_discout": 13666.23
+        },
+        {
+          "line_num": 4,
+          "item_id": "product_3720",
+          "line_amount": 151847,
+          "line_discout": 13666.23
+        }
+      ]
+    }
+  }
+  

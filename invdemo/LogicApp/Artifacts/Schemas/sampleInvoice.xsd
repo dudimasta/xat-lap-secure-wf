@@ -1,0 +1,28 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Invoice">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element type="xs:string" name="account_num"/>
+        <xs:element type="xs:boolean" name="is_domestic"/>
+        <xs:element type="xs:string" name="invoice_id"/>
+        <xs:element type="xs:dateTime" name="invoice_date"/>
+        <xs:element name="InvoiceLines">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="InvoiceLine" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:int" name="line_num"/>
+                    <xs:element type="xs:string" name="item_id"/>
+                    <xs:element type="xs:decimal" name="line_amount"/>
+                    <xs:element type="xs:decimal" name="line_discout"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

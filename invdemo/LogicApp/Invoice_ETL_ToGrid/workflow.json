@@ -1,0 +1,228 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "actions": {
+            "List_files_incoming": {
+                "type": "ServiceProvider",
+                "inputs": {
+                    "parameters": {
+                        "folderId": "sec-wf-file-share/invoices/incoming"
+                    },
+                    "serviceProviderConfiguration": {
+                        "connectionName": "AzureFile",
+                        "operationId": "listFolder",
+                        "serviceProviderId": "/serviceProviders/AzureFile"
+                    }
+                },
+                "runAfter": {}
+            },
+            "For_each_incoming": {
+                "type": "foreach",
+                "foreach": "@outputs('List_files_incoming')?['body']",
+                "actions": {
+                    "Copy_file": {
+                        "type": "ServiceProvider",
+                        "inputs": {
+                            "parameters": {
+                                "SourceFilePath": "@items('For_each_incoming').path",
+                                "destinationFilePath": "@concat('sec-wf-file-share/invoices/processing/', items('For_each_incoming').name)",
+                                "overwrite": true
+                            },
+                            "serviceProviderConfiguration": {
+                                "connectionName": "AzureFile",
+                                "operationId": "copyFile",
+                                "serviceProviderId": "/serviceProviders/AzureFile"
+                            }
+                        }
+                    },
+                    "Delete_file": {
+                        "type": "ServiceProvider",
+                        "inputs": {
+                            "parameters": {
+                                "fileId": "@items('For_each_incoming').path"
+                            },
+                            "serviceProviderConfiguration": {
+                                "connectionName": "AzureFile",
+                                "operationId": "deleteFile",
+                                "serviceProviderId": "/serviceProviders/AzureFile"
+                            }
+                        },
+                        "runAfter": {
+                            "Copy_file": [
+                                "SUCCEEDED"
+                            ]
+                        }
+                    }
+                },
+                "runAfter": {
+                    "List_files_incoming": [
+                        "SUCCEEDED"
+                    ]
+                }
+            },
+            "List_files_in_process": {
+                "type": "ServiceProvider",
+                "inputs": {
+                    "parameters": {
+                        "folderId": "sec-wf-file-share/invoices/processing"
+                    },
+                    "serviceProviderConfiguration": {
+                        "connectionName": "AzureFile",
+                        "operationId": "listFolder",
+                        "serviceProviderId": "/serviceProviders/AzureFile"
+                    }
+                },
+                "runAfter": {
+                    "For_each_incoming": [
+                        "SUCCEEDED"
+                    ]
+                }
+            },
+            "For_each_in_process": {
+                "type": "Foreach",
+                "foreach": "@outputs('List_files_in_process')?['body']",
+                "actions": {
+                    "Get_file_content": {
+                        "type": "ServiceProvider",
+                        "inputs": {
+                            "parameters": {
+                                "fileId": "@items('For_each_in_process').path",
+                                "inferContentType": true
+                            },
+                            "serviceProviderConfiguration": {
+                                "connectionName": "AzureFile",
+                                "operationId": "getFileContent",
+                                "serviceProviderId": "/serviceProviders/AzureFile"
+                            }
+                        },
+                        "runAfter": {
+                            "set_var_mayContinue_to_true": [
+                                "SUCCEEDED"
+                            ]
+                        }
+                    },
+                    "Transform_XML": {
+                        "type": "Xslt",
+                        "inputs": {
+                            "content": "@body('Get_file_content')",
+                            "map": {
+                                "source": "LogicApp",
+                                "name": "sampleInvoiceXmlToJson.xml"
+                            }
+                        },
+                        "runAfter": {
+                            "Get_file_content": [
+                                "SUCCEEDED"
+                            ]
+                        }
+                    },
+                    "set_var_mayContinue_to_true": {
+                        "type": "SetVariable",
+                        "inputs": {
+                            "name": "var_mayContinue",
+                            "value": true
+                        }
+                    },
+                    "transformError": {
+                        "type": "SetVariable",
+                        "inputs": {
+                            "name": "var_mayContinue",
+                            "value": false
+                        },
+                        "runAfter": {
+                            "Transform_XML": [
+                                "FAILED"
+                            ]
+                        }
+                    },
+                    "check_processed_ok": {
+                        "type": "If",
+                        "expression": {
+                            "and": [
+                                {
+                                    "equals": [
+                                        "@variables('var_mayContinue')",
+                                        true
+                                    ]
+                                }
+                            ]
+                        },
+                        "actions": {},
+                        "else": {
+                            "actions": {
+                                "Copy_file_to_processedError": {
+                                    "type": "ServiceProvider",
+                                    "inputs": {
+                                        "parameters": {
+                                            "SourceFilePath": "@items('For_each_in_process').path",
+                                            "destinationFilePath": "@concat('sec-wf-file-share/invoices/processedError/', items('For_each_in_process').name)"
+                                        },
+                                        "serviceProviderConfiguration": {
+                                            "connectionName": "AzureFile",
+                                            "operationId": "copyFile",
+                                            "serviceProviderId": "/serviceProviders/AzureFile"
+                                        }
+                                    }
+                                },
+                                "Delete_file_from_processing": {
+                                    "type": "ServiceProvider",
+                                    "inputs": {
+                                        "parameters": {
+                                            "fileId": "@items('For_each_in_process').path"
+                                        },
+                                        "serviceProviderConfiguration": {
+                                            "connectionName": "AzureFile",
+                                            "operationId": "deleteFile",
+                                            "serviceProviderId": "/serviceProviders/AzureFile"
+                                        }
+                                    },
+                                    "runAfter": {
+                                        "Copy_file_to_processedError": [
+                                            "SUCCEEDED"
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        "runAfter": {
+                            "transformError": [
+                                "SUCCEEDED"
+                            ]
+                        }
+                    }
+                },
+                "runAfter": {
+                    "Initialize_var_mayContinue": [
+                        "SUCCEEDED"
+                    ]
+                }
+            },
+            "Initialize_var_mayContinue": {
+                "type": "InitializeVariable",
+                "inputs": {
+                    "variables": [
+                        {
+                            "name": "var_mayContinue",
+                            "type": "boolean",
+                            "value": true
+                        }
+                    ]
+                },
+                "runAfter": {
+                    "List_files_in_process": [
+                        "SUCCEEDED"
+                    ]
+                }
+            }
+        },
+        "contentVersion": "1.0.0.0",
+        "outputs": {},
+        "triggers": {
+            "When_a_HTTP_request_is_received": {
+                "type": "Request",
+                "kind": "Http"
+            }
+        }
+    },
+    "kind": "Stateful"
+}

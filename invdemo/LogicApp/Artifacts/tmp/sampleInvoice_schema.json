@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "Invoice": {
+      "type": "object",
+      "properties": {
+        "account_num": { "type": "string" },
+        "is_domestic": { "type": "boolean" },
+        "invoice_id": { "type": "string" },
+        "invoice_date": { "type": "string", "format": "date-time" },
+        "InvoiceLines": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "line_num": { "type": "integer" },
+              "item_id": { "type": "string" },
+              "line_amount": { "type": "number" },
+              "line_discout": { "type": "number" }
+            },
+            "required": ["line_num", "item_id", "line_amount", "line_discout"]
+          }
+        }
+      },
+      "required": ["account_num", "is_domestic", "invoice_id", "invoice_date", "InvoiceLines"]
+    }
+  },
+  "required": ["Invoice"]
+}
