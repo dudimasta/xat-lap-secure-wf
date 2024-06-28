@@ -202,7 +202,40 @@
                             }
                         },
                         "else": {
-                            "actions": {}
+                            "actions": {
+                                "Transform_XML_Invoice_to_CSV": {
+                                    "type": "Xslt",
+                                    "inputs": {
+                                        "content": "@body('Get_file_content')",
+                                        "map": {
+                                            "source": "LogicApp",
+                                            "name": "InvoiceToCSV2.xml"
+                                        },
+                                        "transformOptions": "GenerateTextOutput,DisableByteOrderMark"
+                                    }
+                                },
+                                "Send_message": {
+                                    "type": "ServiceProvider",
+                                    "inputs": {
+                                        "parameters": {
+                                            "entityName": "other-invoices",
+                                            "message": {
+                                                "contentData": "@body('Transform_XML_Invoice_to_CSV')"
+                                            }
+                                        },
+                                        "serviceProviderConfiguration": {
+                                            "connectionName": "serviceBus",
+                                            "operationId": "sendMessage",
+                                            "serviceProviderId": "/serviceProviders/serviceBus"
+                                        }
+                                    },
+                                    "runAfter": {
+                                        "Transform_XML_Invoice_to_CSV": [
+                                            "SUCCEEDED"
+                                        ]
+                                    }
+                                }
+                            }
                         },
                         "runAfter": {
                             "Set_variable": [

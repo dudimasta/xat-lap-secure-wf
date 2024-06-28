@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+    <xsl:output method="text" encoding="UTF-8" />
+    <xsl:strip-space elements="*" />
+
+    <xsl:template match="/">
+        <xsl:text>account_num,is_domestic,invoice_id,invoice_date,line_num,item_id,line_amount,line_discout&#xA;</xsl:text>
+        <xsl:apply-templates select="//Invoice" />
+    </xsl:template>
+
+    <xsl:template match="Invoice">
+        <xsl:variable name="invoiceData" select="concat(account_num,',',is_domestic,',',invoice_id,',',invoice_date,',')" />
+        <xsl:apply-templates select="InvoiceLines/InvoiceLine">
+            <xsl:with-param name="invoiceData" select="$invoiceData" />
+        </xsl:apply-templates>
+    </xsl:template>
+
+    <xsl:template match="InvoiceLine">
+        <xsl:param name="invoiceData" />
+        <xsl:value-of select="concat($invoiceData,line_num,',',item_id,',',line_amount,',',line_discout,'&#xA;')" />
+    </xsl:template>
+</xsl:stylesheet>

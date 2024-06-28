@@ -21,6 +21,16 @@
         "id": "/serviceProviders/eventGridPublisher"
       },
       "displayName": "az-ev-grid-domestic"
+    },
+    "serviceBus": {
+      "parameterValues": {
+        "connectionString": "@appsetting('serviceBus_connectionString')"
+      },
+      "parameterSetName": "connectionString",
+      "serviceProvider": {
+        "id": "/serviceProviders/serviceBus"
+      },
+      "displayName": "az-ASBQ-other-invoices"
     }
   }
 }
