@@ -5,10 +5,18 @@ Repo bazuje na infrastrukturze założonej z projektu https://github.com/dudimas
 
 ## Realizowany scenariusz
 Na dużym podziomie ogólności:
-- Az Funkcja <i>Functions\ProduceInvoice.cs</i> generuje ciąg znaków w XMLu.
+- Az Funkcja <i>Functions\ProduceInvoice.cs</i> generuje ciąg znaków w XMLu, który udaje fakturę. W scenariuszu przetwarzamy dwa rodzaje faktur - krajowe i zagraniczne.
 - Workflow <i>\LogicApp\PushInvoice\workflow.json</i> wywołuje funkcję ProduceInvoice.cs i zapisuje zawartość w Az File w ścieżce <i>invoices/incoming/.xml</i>
 - Drugi workflow odczytuje pliki z Az File, wykonuje ich transformację (wykorzystując mapy i reguły XSLT) 
 i zapisuje je do Azure Event Grida
+    - po zaczytaniu pliku z Az File wykonuje walidację komunikatu względem ustalonego kontraktu, czyli pliku zapisanego w LogicApp\Artifacts\Schemas\<b>sampleInvoice.xsd</b>
+    - jeśli OK, to wykonuje parsowanie komunikatu przychodzącego - określa, czy faktura jest krajowa czy zagraniczna
+    - dla krajowych:
+        - transformuje do JSON zgodnie ze XSLT z pliku /LogicApp/Arifacts/Maps/sample_xsl.xml
+        - zapisuje <b>komunikat JSON</b> do event grida dedykowanego dla faktur krajowych
+    - dla zagranicznych
+        - transformuje fakturę do formatu pliku płaskiego
+        - zapisuje komunikat tekstowy do do event grida dedykowanego dla faktur zagranizcnych
 
 ## Prezentowane koncepcje:
 - programowanie LogicApps w VSC na lokalnej maszynie
@@ -25,6 +33,7 @@ i zapisuje je do Azure Event Grida
     - zmienne środowiskowe
     - załadowane biblioteki, mapy, XSLT
 - redeployment aplikacji z VSC
+- pętle w Logic Apps domyślnie chodzą równolegle, tzn. jeśli korzystają ze wspólnych zmiennych globalnych, to nawzajem je sobie nadpisują. Aby synchronizować dostęp do zmiennych globalnych należy ustawić <b>DOP na 1</b>
 
 
 ## Po kolei:

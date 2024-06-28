@@ -78,7 +78,7 @@
                     ]
                 }
             },
-            "For_each_in_process": {
+            "For_each_in_processing": {
                 "type": "Foreach",
                 "foreach": "@outputs('List_files_in_process')?['body']",
                 "actions": {
@@ -86,7 +86,7 @@
                         "type": "ServiceProvider",
                         "inputs": {
                             "parameters": {
-                                "fileId": "@items('For_each_in_process').path",
+                                "fileId": "@items('For_each_in_processing').path",
                                 "inferContentType": true
                             },
                             "serviceProviderConfiguration": {
@@ -94,11 +94,6 @@
                                 "operationId": "getFileContent",
                                 "serviceProviderId": "/serviceProviders/AzureFile"
                             }
-                        },
-                        "runAfter": {
-                            "set_var_mayContinue_to_true": [
-                                "SUCCEEDED"
-                            ]
                         }
                     },
                     "Transform_XML": {
@@ -112,105 +107,171 @@
                             "transformOptions": "DisableByteOrderMark,GenerateTextOutput"
                         },
                         "runAfter": {
+                            "XML_Validation": [
+                                "SUCCEEDED"
+                            ]
+                        }
+                    },
+                    "XML_Validation": {
+                        "type": "XmlValidation",
+                        "inputs": {
+                            "content": "@body('Get_file_content')",
+                            "schema": {
+                                "source": "LogicApp",
+                                "name": "sampleInvoice.xsd"
+                            }
+                        },
+                        "runAfter": {
                             "Get_file_content": [
                                 "SUCCEEDED"
                             ]
                         }
                     },
-                    "set_var_mayContinue_to_true": {
-                        "type": "SetVariable",
+                    "Copy_file_to_processedError": {
+                        "type": "ServiceProvider",
                         "inputs": {
-                            "name": "var_mayContinue",
-                            "value": true
-                        }
-                    },
-                    "transformError": {
-                        "type": "SetVariable",
-                        "inputs": {
-                            "name": "var_mayContinue",
-                            "value": false
+                            "parameters": {
+                                "SourceFilePath": "@items('For_each_in_processing').path",
+                                "destinationFilePath": "@concat('sec-wf-file-share/invoices/processedError/', items('For_each_in_processing').name)"
+                            },
+                            "serviceProviderConfiguration": {
+                                "connectionName": "AzureFile",
+                                "operationId": "copyFile",
+                                "serviceProviderId": "/serviceProviders/AzureFile"
+                            }
                         },
                         "runAfter": {
-                            "Transform_XML": [
+                            "XML_Validation": [
+                                "FAILED"
+                            ],
+                            "If_invoice_is_domestic": [
                                 "FAILED"
                             ]
                         }
                     },
-                    "check_processed_ok": {
+                    "Delete_file_from_processing": {
+                        "type": "ServiceProvider",
+                        "inputs": {
+                            "parameters": {
+                                "fileId": "@items('For_each_in_processing').path"
+                            },
+                            "serviceProviderConfiguration": {
+                                "connectionName": "AzureFile",
+                                "operationId": "deleteFile",
+                                "serviceProviderId": "/serviceProviders/AzureFile"
+                            }
+                        },
+                        "runAfter": {
+                            "Copy_file_to_processedError": [
+                                "SUCCEEDED"
+                            ]
+                        }
+                    },
+                    "If_invoice_is_domestic": {
                         "type": "If",
                         "expression": {
                             "and": [
                                 {
                                     "equals": [
-                                        "@variables('var_mayContinue')",
-                                        true
+                                        "@variables('var_isDomesticInvoice')",
+                                        "@variables('var_true')"
                                     ]
                                 }
                             ]
                         },
-                        "actions": {},
-                        "else": {
-                            "actions": {
-                                "Copy_file_to_processedError": {
-                                    "type": "ServiceProvider",
-                                    "inputs": {
-                                        "parameters": {
-                                            "SourceFilePath": "@items('For_each_in_process').path",
-                                            "destinationFilePath": "@concat('sec-wf-file-share/invoices/processedError/', items('For_each_in_process').name)"
-                                        },
-                                        "serviceProviderConfiguration": {
-                                            "connectionName": "AzureFile",
-                                            "operationId": "copyFile",
-                                            "serviceProviderId": "/serviceProviders/AzureFile"
-                                        }
-                                    }
-                                },
-                                "Delete_file_from_processing": {
-                                    "type": "ServiceProvider",
-                                    "inputs": {
-                                        "parameters": {
-                                            "fileId": "@items('For_each_in_process').path"
-                                        },
-                                        "serviceProviderConfiguration": {
-                                            "connectionName": "AzureFile",
-                                            "operationId": "deleteFile",
-                                            "serviceProviderId": "/serviceProviders/AzureFile"
-                                        }
-                                    },
-                                    "runAfter": {
-                                        "Copy_file_to_processedError": [
-                                            "SUCCEEDED"
+                        "actions": {
+                            "Publish_Events": {
+                                "type": "ServiceProvider",
+                                "inputs": {
+                                    "parameters": {
+                                        "events": [
+                                            {
+                                                "id": "@{guid()}",
+                                                "subject": "domesticinvoice",
+                                                "eventType": "recordInserted",
+                                                "data": "@{outputs('Compose_invoice_object')}"
+                                            }
                                         ]
+                                    },
+                                    "serviceProviderConfiguration": {
+                                        "connectionName": "eventGridPublisher",
+                                        "operationId": "publishEvents",
+                                        "serviceProviderId": "/serviceProviders/eventGridPublisher"
                                     }
                                 }
                             }
                         },
+                        "else": {
+                            "actions": {}
+                        },
                         "runAfter": {
-                            "transformError": [
+                            "Set_variable": [
+                                "SUCCEEDED"
+                            ]
+                        }
+                    },
+                    "Set_variable": {
+                        "type": "SetVariable",
+                        "inputs": {
+                            "name": "var_isDomesticInvoice",
+                            "value": "@outputs('Compose_invoice_object').Invoice.ERP_EU_TRADE"
+                        },
+                        "runAfter": {
+                            "Compose_invoice_object": [
+                                "SUCCEEDED"
+                            ]
+                        }
+                    },
+                    "Compose_invoice_object": {
+                        "type": "Compose",
+                        "inputs": "@json(body('Transform_XML'))",
+                        "runAfter": {
+                            "Transform_XML": [
                                 "SUCCEEDED"
                             ]
                         }
                     }
                 },
                 "runAfter": {
-                    "Initialize_var_mayContinue": [
+                    "Initialize_variable_1": [
                         "SUCCEEDED"
                     ]
+                },
+                "runtimeConfiguration": {
+                    "concurrency": {
+                        "repetitions": 1
+                    }
                 }
             },
-            "Initialize_var_mayContinue": {
+            "Initialize_variable": {
                 "type": "InitializeVariable",
                 "inputs": {
                     "variables": [
                         {
-                            "name": "var_mayContinue",
+                            "name": "var_isDomesticInvoice",
+                            "type": "boolean"
+                        }
+                    ]
+                },
+                "runAfter": {
+                    "List_files_in_process": [
+                        "SUCCEEDED"
+                    ]
+                }
+            },
+            "Initialize_variable_1": {
+                "type": "InitializeVariable",
+                "inputs": {
+                    "variables": [
+                        {
+                            "name": "var_true",
                             "type": "boolean",
                             "value": true
                         }
                     ]
                 },
                 "runAfter": {
-                    "List_files_in_process": [
+                    "Initialize_variable": [
                         "SUCCEEDED"
                     ]
                 }

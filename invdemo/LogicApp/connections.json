@@ -10,6 +10,17 @@
         "id": "/serviceProviders/AzureFile"
       },
       "displayName": "AzureFile-1"
+    },
+    "eventGridPublisher": {
+      "parameterValues": {
+        "accessKey": "@appsetting('eventGridPublisher_accessKey')",
+        "topicEndpoint": "@appsetting('eventGridPublisher_topicEndpoint')"
+      },
+      "parameterSetName": "accessKey",
+      "serviceProvider": {
+        "id": "/serviceProviders/eventGridPublisher"
+      },
+      "displayName": "az-ev-grid-domestic"
     }
   }
 }
