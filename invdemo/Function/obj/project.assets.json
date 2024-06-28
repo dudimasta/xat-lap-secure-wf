@@ -1180,7 +1180,7 @@
             "version": "[4.2.0, )"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Users\\rdudzinski\\.azurelogicapps\\dependencies\\DotNetSDK\\sdk\\8.0.302\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.205\\RuntimeIdentifierGraph.json"
       }
     }
   }

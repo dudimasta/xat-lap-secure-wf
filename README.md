@@ -6,17 +6,17 @@ Repo bazuje na infrastrukturze założonej z projektu https://github.com/dudimas
 ## Realizowany scenariusz
 Na dużym podziomie ogólności:
 - Az Funkcja <i>Functions\ProduceInvoice.cs</i> generuje ciąg znaków w XMLu, który udaje fakturę. W scenariuszu przetwarzamy dwa rodzaje faktur - krajowe i zagraniczne.
-- Workflow <i>\LogicApp\PushInvoice\workflow.json</i> wywołuje funkcję ProduceInvoice.cs i zapisuje zawartość w Az File w ścieżce <i>invoices/incoming/.xml</i>
-- Drugi workflow odczytuje pliki z Az File, wykonuje ich transformację (wykorzystując mapy i reguły XSLT) 
+- Workflow <i>\LogicApp<u>\PushInvoice</u>\workflow.json</i> wywołuje funkcję ProduceInvoice.cs i zapisuje zawartość w Az File w ścieżce <i>[Az File share]/invoices/incoming/.xml</i>
+- Drugi workflow - <i>\LogicApp<u>\Invoice_ETL_ToGrid</u>\workflow.json</i> odczytuje pliki z Az File, wykonuje ich transformację (wykorzystując mapy i reguły XSLT) 
 i zapisuje je do Azure Event Grida
-    - po zaczytaniu pliku z Az File wykonuje walidację komunikatu względem ustalonego kontraktu, czyli pliku zapisanego w LogicApp\Artifacts\Schemas\<b>sampleInvoice.xsd</b>
+    - po zaczytaniu pliku z Az File wykonuje walidację komunikatu względem ustalonego kontraktu, czyli pliku zapisanego w LogicApp\Artifacts\Schemas<b>\sampleInvoice.xsd</b>
     - jeśli OK, to wykonuje parsowanie komunikatu przychodzącego - określa, czy faktura jest krajowa czy zagraniczna
     - dla krajowych:
         - transformuje do JSON zgodnie ze XSLT z pliku /LogicApp/Arifacts/Maps/sample_xsl.xml
         - zapisuje <b>komunikat JSON</b> do event grida dedykowanego dla faktur krajowych
     - dla zagranicznych
-        - transformuje fakturę do formatu pliku płaskiego
-        - zapisuje komunikat tekstowy do do event grida dedykowanego dla faktur zagranizcnych
+        - transformuje fakturę do formatu pliku płaskiego CSV zgodnie z instrukcjami transformacji z pliku XSLT: <i>Artifacts\Maps\InvoiceToCSV2.xml</i>
+        - zapisuje komunikat tekstowy do kolejki ASBQ dedykowanej dla faktur zagranicznych
 
 ## Prezentowane koncepcje:
 - programowanie LogicApps w VSC na lokalnej maszynie
@@ -26,7 +26,7 @@ i zapisuje je do Azure Event Grida
     - workfow \invdemo\LogicApp\PushInvoice\workflow.json wykorzystuje niestandardową logikę napisaną w C# w \invdemo\Function\ProduceInvoice.cs
 - użycie XSL w Logic Apps
     - /LogicApp/Arifacts/Maps/sample_xsl.xml - to mapa, która jest wykorzystana do przetłumaczenia zaczynanego pliku XML z fakturą do postaci JSON.
-- użycie schematów w Logic Apps
+- użycie schematów XSD (dla XMLi) w Logic Apps - np. aktywność "XML Validation"
 - wywołanie deploymentu z VSC do Azura
 - omówienie wyniku deploymentu
     - integracja z App Insights
