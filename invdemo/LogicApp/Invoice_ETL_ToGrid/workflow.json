@@ -107,8 +107,9 @@
                             "content": "@body('Get_file_content')",
                             "map": {
                                 "source": "LogicApp",
-                                "name": "sampleInvoiceXmlToJson.xml"
-                            }
+                                "name": "sample_xsl.xml"
+                            },
+                            "transformOptions": "DisableByteOrderMark,GenerateTextOutput"
                         },
                         "runAfter": {
                             "Get_file_content": [

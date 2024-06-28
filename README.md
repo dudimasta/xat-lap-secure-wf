@@ -16,8 +16,8 @@ i zapisuje je do Azure Event Grida
     - uruchamianie i debuggowanie na lokalnej maszynie
 - programowanie rozszerzeń w C# do workflowów uruchomionych w Logic Apps
     - workfow \invdemo\LogicApp\PushInvoice\workflow.json wykorzystuje niestandardową logikę napisaną w C# w \invdemo\Function\ProduceInvoice.cs
-- użycie map w Logic Apps
-- użycie XSLT w Logic Apps
+- użycie XSL w Logic Apps
+    - /LogicApp/Arifacts/Maps/sample_xsl.xml - to mapa, która jest wykorzystana do przetłumaczenia zaczynanego pliku XML z fakturą do postaci JSON.
 - użycie schematów w Logic Apps
 - wywołanie deploymentu z VSC do Azura
 - omówienie wyniku deploymentu

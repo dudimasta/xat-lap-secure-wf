@@ -1,0 +1,35 @@
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+    <xsl:output method="text" />
+
+    <xsl:template match="/">
+        {
+            <xsl:apply-templates select="Invoice"/>
+        }
+    </xsl:template>
+
+    <xsl:template match="Invoice">
+        "Invoice": {
+            "VENDOR_IDENTIFIER": "<xsl:value-of select="account_num"/>",
+            "ERP_EU_TRADE": <xsl:value-of select="is_domestic"/>,
+            "FISCAL_DOC_NUMBER": "<xsl:value-of select="invoice_id"/>",
+            "FISCAL_DOC_DATE": "<xsl:value-of select="invoice_date"/>",
+            <xsl:apply-templates select="InvoiceLines"/>
+        }
+    </xsl:template>
+
+    <xsl:template match="InvoiceLines">
+        "InvoiceLines": [
+            <xsl:apply-templates select="InvoiceLine"/>
+        ]
+    </xsl:template>
+
+    <xsl:template match="InvoiceLine">
+        {
+            "POSITION": <xsl:value-of select="line_num"/>,
+            "SKU": "<xsl:value-of select="item_id"/>",
+            "GROSS_VALUE": <xsl:value-of select="line_amount"/>,
+            "line_discout": <xsl:value-of select="line_discout"/>
+        }
+        <xsl:if test="following-sibling::*">,</xsl:if>
+    </xsl:template>
+</xsl:stylesheet>

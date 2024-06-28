@@ -1,17 +1,69 @@
 namespace xat.InvUtils
 {
+  using System.CodeDom;
   using System.Collections.Generic;
+    using System.IO;
+    using System.Text;
+  using System.Xml;
+  using System.Xml.Serialization;
   public class InvoiceEnvelope
   {
 
     public InvoiceEnvelope(Invoice _invoice)
     {
-      this.invoice = _invoice;
-      var serializer = new System.Xml.Serialization.XmlSerializer(typeof(Invoice));
-      var stringWriter = new System.IO.StringWriter();
-      serializer.Serialize(stringWriter, invoice);
-      invoiceInXml = stringWriter.ToString();
+      invoice = _invoice;
+      invoiceInXml = serialize_v2(_invoice);
+
+      // var stringWriter = new System.IO.StringWriter();
+      // serializer.Serialize(stringWriter, invoice);
+      // invoiceInXml = stringWriter.ToString();
     }
+
+    private static string serialize_v2(Invoice _invoice)
+    {
+      string ret;
+
+      XmlSerializer ser = new XmlSerializer(typeof(Invoice));
+        // Using a MemoryStream to store the serialized string as a byte array, 
+        // which is "encoding-agnostic"
+        using (MemoryStream ms = new MemoryStream())
+            // Few options here, but remember to use a signature that allows you to 
+            // specify the encoding  
+            using (XmlTextWriter tw = new XmlTextWriter(ms, Encoding.UTF8)) 
+            {
+                tw.Formatting = Formatting.Indented;
+                ser.Serialize(tw, _invoice);
+                // Now we get the serialized data as a string in the desired encoding
+                ret = Encoding.UTF8.GetString(ms.ToArray());
+            }
+
+      return ret;
+    }
+
+    private static string serialize_v1(Invoice _invoice)
+    {
+      string ret;
+
+      var serializer = new XmlSerializer(typeof(Invoice));
+
+      XmlWriterSettings settings = new XmlWriterSettings
+      {
+        Indent = false,
+        Encoding = Encoding.UTF8
+      };
+
+      StringBuilder builder = new StringBuilder();
+
+      using (XmlWriter writer = XmlWriter.Create(builder, settings))
+      {
+        serializer.Serialize(writer, _invoice);
+      }
+
+      ret = builder.ToString();
+
+      return ret;
+    }
+
     private Invoice invoice;
     private string invoiceInXml;
     public string FileName
@@ -65,7 +117,7 @@ namespace xat.InvUtils
 
   public class InvoiceLine
   {
-    public string line_num {get; set; }
+    public string line_num { get; set; }
     public string item_id { get; set; }
     public double line_amount { get; set; }
     public double line_discout { get; set; }
