@@ -37,6 +37,7 @@ i zapisuje je do Azure Event Grida
 
 
 ## Po kolei:
+### Zapoznanie się z zawartością repo
 - w tym scenariuszu pracujesz z VSC, które jest uruchomione na Windowsie (nie w kontenerze)
 - Aby budować funkcje lub nowe workflowy w tej bibliotece, należy otworzyć workspace [root git folder]/invdemo/invdemo.code-workspace
     - przełącz na workspace invdemo.code-workspace (File > Open workspace from file)
