@@ -36,14 +36,41 @@ i zapisuje je do Azure Event Grida
 - pętle w Logic Apps domyślnie chodzą równolegle, tzn. jeśli korzystają ze wspólnych zmiennych globalnych, to nawzajem je sobie nadpisują. Aby synchronizować dostęp do zmiennych globalnych należy ustawić <b>DOP na 1</b>
 
 
+## Prereqs:
+- Extensions: 
+    - Azure Account
+    - Azure Logic Apps (Standard)
+- VSC zaproponuje instację rozszerzenia C# Dev Kit. W tym przypadku <b>nie należy instalować tego rozszerzenia</b>
+- wyedytuj plik invdemo.code-workspace i zmień ścieżki w "settings", mają wskazywać na lokalizację zalogowanego usera
+
 ## Po kolei:
 ### Zapoznanie się z zawartością repo
 - w tym scenariuszu pracujesz z VSC, które jest uruchomione na Windowsie (nie w kontenerze)
 - Aby budować funkcje lub nowe workflowy w tej bibliotece, należy otworzyć workspace [root git folder]/invdemo/invdemo.code-workspace
     - przełącz na workspace invdemo.code-workspace (File > Open workspace from file)
 - zainstaluj rozszerzenia <b>Azure Logic Apps (Standard)</b>. Zrestartuj (ze dwa razy :-), po instalacji lub przełączeniu na workspace VSC dopiero przy restarcie sprawdza zależnośći i dociąga czego brakuje)
+- przejrzyj kod w plikach:
+    - ProduceInvoice.cs
+    - objects.cs
+- wykonaj <code>dotnet build .\ProduceInvoice.csproj</code> projektu zawierającego kod rozszerzeń (Functions). W wyniku buildu biblioteki zostaną wrzucone do [...]\LogicApp\lib\custom\net472
+- Przejrzyj w designerze workflow PushInvoice
+
+### Uruchom workflow lokalnie
+- wyedytuj workflow PushInvoice w Designerze, w akcji Create File ustaw nazwę Az File, właściwość Folder Path, np "rdu-lab-file-share"
+    - w przypadku produkcyjnym, nazwy zasobów powinny być pobierane ze zmiennych a nie hardkodowane
+- w Az File Storage załóż ścieżkę: invoices/incoming/
+    - w przypadku produkcyjnym taki element infry powinien być stworzony ze skryptów przygotowujących infrę
+- uzupełnij plik local.settings.json na bazie przykładu sample.local.settings.json
+    - w przypadku produkcyjnym klucz należałoby pobrać z właściwego (Prod, UAT, Test, Perf itd) key vaulta
+- uruchom emulatory Azurite, podaj LogicApp jako folder, gdzie będą przechowywać dane
+- ustaw breakpoint w pliku ProduceInvoice.cs w metodzie run
+- uruchom workflow: Debug > Attach to Logic App
+- dołącz do debuggera runtime dla Az Functions: Debug > Attach to Function
+- Uruchom workflow overview > run trigger
+- sprawdź, że w az File stworzyła się faktura
+
+### Deployment do Azure
 - w subskrypcji, do której zamierzasz robić deploymenty, włączyć provider 'Microsoft.OperationalInsights'
-- wykonaj dotnet build projektu zawierającego kod rozszerzeń (Functions)
 - wykonaj deployment z VSC (wskaż region, resource groupę, itd.)
     - Sometimes VS Code will want you to install a C# Dev Kit. If this has been installed, please remove it from the extensions. When C# Dev Kit is installed, it will add ".sln" files to your code project.  Delete these files as they can mess with the build tasks.
     - We have seen a couple situations where the APP_KIND isn't set. It should be set to workflowApp. You can find this setting in the Environment variables section. Set as follows:
@@ -57,6 +84,8 @@ i zapisuje je do Azure Event Grida
     - powinien pojawić się błąd przy próbie zapisu pliku - W "logu" workflowu krok "Create file" powinien mieć błąd "Forbidden"
     - Teraz należy wpuścić ruch z tej logic apki do Az File (utworzonego w skryptach dostępnych w https://github.com/dudimasta/xat-lap-secure-infra). Skrypty w Infra tworzą i konfigurują dostęp do Az File z VNetu, który jest stworzony w RG zawierającej LogicApp. Po deploymencie logic apki do Azure, podłącz ją pod VNet w tym celu:
     - otwórz Logic Apkę w Azure portal > Networking > Outgoing > Vnet integration, wybierz vnet i subnet utworzony przez skrypty z infry. Uruchom WF ponownie i sprawdź, że w Az File masz nowy plik
+
+### Demo: Utworzenie nowego workflowu
     
 - !!! po skończeniu testów usuń komponenty z azura !!!
 
@@ -80,7 +109,7 @@ Problem polega na tym, że Standard Logic Apps są płane up-front i to sporo. W
 
  ## Branching tips:
  Open your repository in Visual Studio Code: You can do this by opening Visual Studio Code, clicking on File > Open Folder and then navigating to your repository’s location on your local machine.
-Open the integrated terminal: You can open the terminal in Visual Studio Code by clicking on View > Terminal or using the shortcut `Ctrl + ``.
+Open the integrated terminal: You can open the terminal in Visual Studio Code by clicking on View > Terminal or using the shortcut Ctrl + `.
 Fetch all branches from the remote repository: Before creating a new branch, it’s a good practice to fetch all the branches from the remote repository. You can do this by running the following command in the terminal:
 <br /><code>git fetch origin</code>
 
@@ -95,3 +124,6 @@ Create and switch to the new branch: You can create a new branch called myDevBra
 
 Push the new branch to the remote repository: Finally, you can push the new branch to the remote repository by running the following command in the terminal:
 <br /><code>git push -u origin myDevBranch</code>
+
+You can check which branch you have currently checked out in Git by using the following command in your terminal:
+<br /><code>git branch --show-current</code>

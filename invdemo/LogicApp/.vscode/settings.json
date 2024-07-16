@@ -2,5 +2,6 @@
     "azureLogicAppsStandard.deploySubpath": ".",
     "azureLogicAppsStandard.projectLanguage": "JavaScript",
     "azureLogicAppsStandard.projectRuntime": "~4",
-    "azureFunctions.suppressProject": true
+    "azureFunctions.suppressProject": true,
+    "azureLogicAppsStandard.projectSubpath": ".\\"
 }

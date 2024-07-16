@@ -33,7 +33,7 @@
                 "type": "ServiceProvider",
                 "inputs": {
                     "parameters": {
-                        "folderPath": "sec-wf-file-share",
+                        "folderPath": "rdu-lab-file-share",
                         "fileName": "@concat('invoices/incoming/', variables('var_fileName'))",
                         "fileContent": "@body('Call_a_local_function_in_this_logic_app')?['InvoiceInXml']"
                     },

@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\GitHub\\xat-lap-secure-wf\\invdemo\\Function\\ProduceInvoice.csproj": {}
+    "C:\\GitHub\\xat-lap-secure-wf\\invdemo\\Function\\ProduceInvoice.csproj": {}
   },
   "projects": {
-    "D:\\GitHub\\xat-lap-secure-wf\\invdemo\\Function\\ProduceInvoice.csproj": {
+    "C:\\GitHub\\xat-lap-secure-wf\\invdemo\\Function\\ProduceInvoice.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\GitHub\\xat-lap-secure-wf\\invdemo\\Function\\ProduceInvoice.csproj",
+        "projectUniqueName": "C:\\GitHub\\xat-lap-secure-wf\\invdemo\\Function\\ProduceInvoice.csproj",
         "projectName": "ProduceInvoice",
-        "projectPath": "D:\\GitHub\\xat-lap-secure-wf\\invdemo\\Function\\ProduceInvoice.csproj",
-        "packagesPath": "C:\\Users\\rdudzinski\\.nuget\\packages\\",
-        "outputPath": "D:\\GitHub\\xat-lap-secure-wf\\invdemo\\Function\\obj\\",
+        "projectPath": "C:\\GitHub\\xat-lap-secure-wf\\invdemo\\Function\\ProduceInvoice.csproj",
+        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+        "outputPath": "C:\\GitHub\\xat-lap-secure-wf\\invdemo\\Function\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "d:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\rdudzinski\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -70,7 +70,7 @@
               "version": "[4.2.0, )"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.205\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Users\\User\\.azurelogicapps\\dependencies\\DotNetSDK\\sdk\\8.0.303\\RuntimeIdentifierGraph.json"
         }
       }
     }

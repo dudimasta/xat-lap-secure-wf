@@ -1,3 +1,3 @@
-dotnet clean ./Function.sln
-dotnet restore ./Function.sln
-dotnet build ./Function.sln
+dotnet clean ./ProduceInvoice.csproj
+dotnet restore ./ProduceInvoice.csproj
+dotnet build ./ProduceInvoice.csproj

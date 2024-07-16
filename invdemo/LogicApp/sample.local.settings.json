@@ -1,0 +1,14 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "APP_KIND": "workflowapp",
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "WORKFLOWS_SUBSCRIPTION_ID": "de47847e-1e04-4c18-99de-a11f659d3119",
+    "WORKFLOWS_RESOURCE_GROUP_NAME": "rdu-lab-workflow-rg",
+    "WORKFLOWS_MANAGEMENT_BASE_URI": "https://management.azure.com/",
+    "AzureWebJobsFeatureFlags": "EnableMultiLanguageWorker",
+    "AzureFile_connectionString": "DefaultEndpointsProtocol=https;AccountName=[STORAGE-NAME-GOES-HERE];AccountKey=[YOUR-KEY-GOES-HERE];EndpointSuffix=core.windows.net"
+    //e.g.: "AzureFile_connectionString": "DefaultEndpointsProtocol=https;AccountName=secwfstorage;AccountKey=Z3lG/xV4cCBoNPA05PbI0JfGCfeqDVVUfrA2XDqu2cqjWYKau5UWiK58s0WWFraYb54mk4+dzwsp+AStetF8KQ==;EndpointSuffix=core.windows.net"
+  }
+}

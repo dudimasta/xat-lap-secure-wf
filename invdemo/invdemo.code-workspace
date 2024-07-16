@@ -15,12 +15,12 @@
   ],
   "settings": {
     "terminal.integrated.env.windows": {
-      "PATH": "C:\\Users\\rdudzinski\\.azurelogicapps\\dependencies\\DotNetSDK;${env:PATH}"
+      "PATH": "C:\\Users\\User\\.azurelogicapps\\dependencies\\DotNetSDK;${env:PATH}"
     },
     "omnisharp.dotNetCliPaths": [
-      "C:\\Users\\rdudzinski\\.azurelogicapps\\dependencies\\DotNetSDK"
+      "C:\\Users\\User\\.azurelogicapps\\dependencies\\DotNetSDK"
     ],
-    "azurite.location": "C:\\Users\\rdudzinski\\.azurelogicapps\\.azurite",
+    "azurite.location": "",
     "debug.internalConsoleOptions": "neverOpen"
   }
 }
