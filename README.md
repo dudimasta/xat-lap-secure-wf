@@ -77,3 +77,21 @@ Problem polega na tym, że Standard Logic Apps są płane up-front i to sporo. W
     - custom C# code (net 472): https://techcommunity.microsoft.com/t5/azure-integration-services-blog/announcement-introducing-net-framework-custom-code-for-azure/ba-p/3847711
     - custom C# code (net core 8):https://techcommunity.microsoft.com/t5/azure-integration-services-blog/announcement-introducing-net-8-custom-code-support-for-azure/ba-p/4167893
  
+
+ ## Branching tips:
+ Open your repository in Visual Studio Code: You can do this by opening Visual Studio Code, clicking on File > Open Folder and then navigating to your repository’s location on your local machine.
+Open the integrated terminal: You can open the terminal in Visual Studio Code by clicking on View > Terminal or using the shortcut `Ctrl + ``.
+Fetch all branches from the remote repository: Before creating a new branch, it’s a good practice to fetch all the branches from the remote repository. You can do this by running the following command in the terminal:
+<br /><code>git fetch origin</code>
+
+Check out to the main branch: You can switch to the main branch by running the following command in the terminal:
+<br /><code>git checkout main</code>
+
+Pull the latest changes from the main branch: You can pull the latest changes from the main branch by running the following command in the terminal:
+<br /><code>git pull origin main</code>
+
+Create and switch to the new branch: You can create a new branch called myDevBranch and switch to it by running the following command in the terminal:
+<br /><code>git checkout -b myDevBranch</code>
+
+Push the new branch to the remote repository: Finally, you can push the new branch to the remote repository by running the following command in the terminal:
+<br /><code>git push -u origin myDevBranch</code>
