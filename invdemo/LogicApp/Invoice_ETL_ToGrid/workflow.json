@@ -6,7 +6,7 @@
                 "type": "ServiceProvider",
                 "inputs": {
                     "parameters": {
-                        "folderId": "sec-wf-file-share/invoices/incoming"
+                        "folderId": "rdu-lab-file-share/invoices/incoming"
                     },
                     "serviceProviderConfiguration": {
                         "connectionName": "AzureFile",
@@ -25,7 +25,7 @@
                         "inputs": {
                             "parameters": {
                                 "SourceFilePath": "@items('For_each_incoming').path",
-                                "destinationFilePath": "@concat('sec-wf-file-share/invoices/processing/', items('For_each_incoming').name)",
+                                "destinationFilePath": "@concat('rdu-lab-file-share/invoices/processing/', items('For_each_incoming').name)",
                                 "overwrite": true
                             },
                             "serviceProviderConfiguration": {
@@ -64,7 +64,7 @@
                 "type": "ServiceProvider",
                 "inputs": {
                     "parameters": {
-                        "folderId": "sec-wf-file-share/invoices/processing"
+                        "folderId": "rdu-lab-file-share/invoices/processing"
                     },
                     "serviceProviderConfiguration": {
                         "connectionName": "AzureFile",
@@ -132,7 +132,7 @@
                         "inputs": {
                             "parameters": {
                                 "SourceFilePath": "@items('For_each_in_processing').path",
-                                "destinationFilePath": "@concat('sec-wf-file-share/invoices/processedError/', items('For_each_in_processing').name)"
+                                "destinationFilePath": "@concat('rdu-lab-file-share/invoices/processedError/', items('For_each_in_processing').name)"
                             },
                             "serviceProviderConfiguration": {
                                 "connectionName": "AzureFile",
@@ -199,6 +199,43 @@
                                         "serviceProviderId": "/serviceProviders/eventGridPublisher"
                                     }
                                 }
+                            },
+                            "copy_to_processed_OK": {
+                                "type": "ServiceProvider",
+                                "inputs": {
+                                    "parameters": {
+                                        "SourceFilePath": "@items('For_each_in_processing').path",
+                                        "destinationFilePath": "@concat('rdu-lab-file-share/invoices/processedOK/', items('For_each_in_processing').name)"
+                                    },
+                                    "serviceProviderConfiguration": {
+                                        "connectionName": "AzureFile",
+                                        "operationId": "copyFile",
+                                        "serviceProviderId": "/serviceProviders/AzureFile"
+                                    }
+                                },
+                                "runAfter": {
+                                    "Publish_Events": [
+                                        "SUCCEEDED"
+                                    ]
+                                }
+                            },
+                            "Delete_file_from_processing_2": {
+                                "type": "ServiceProvider",
+                                "inputs": {
+                                    "parameters": {
+                                        "fileId": "@items('For_each_in_processing').path"
+                                    },
+                                    "serviceProviderConfiguration": {
+                                        "connectionName": "AzureFile",
+                                        "operationId": "deleteFile",
+                                        "serviceProviderId": "/serviceProviders/AzureFile"
+                                    }
+                                },
+                                "runAfter": {
+                                    "copy_to_processed_OK": [
+                                        "SUCCEEDED"
+                                    ]
+                                }
                             }
                         },
                         "else": {
@@ -231,6 +268,43 @@
                                     },
                                     "runAfter": {
                                         "Transform_XML_Invoice_to_CSV": [
+                                            "SUCCEEDED"
+                                        ]
+                                    }
+                                },
+                                "copy_to_processed_OK_1": {
+                                    "type": "ServiceProvider",
+                                    "inputs": {
+                                        "parameters": {
+                                            "SourceFilePath": "@items('For_each_in_processing').path",
+                                            "destinationFilePath": "@concat('rdu-lab-file-share/invoices/processedOK/', items('For_each_in_processing').name)"
+                                        },
+                                        "serviceProviderConfiguration": {
+                                            "connectionName": "AzureFile",
+                                            "operationId": "copyFile",
+                                            "serviceProviderId": "/serviceProviders/AzureFile"
+                                        }
+                                    },
+                                    "runAfter": {
+                                        "Send_message": [
+                                            "SUCCEEDED"
+                                        ]
+                                    }
+                                },
+                                "Delete_file_from_processing_3": {
+                                    "type": "ServiceProvider",
+                                    "inputs": {
+                                        "parameters": {
+                                            "fileId": "@items('For_each_in_processing').path"
+                                        },
+                                        "serviceProviderConfiguration": {
+                                            "connectionName": "AzureFile",
+                                            "operationId": "deleteFile",
+                                            "serviceProviderId": "/serviceProviders/AzureFile"
+                                        }
+                                    },
+                                    "runAfter": {
+                                        "copy_to_processed_OK_1": [
                                             "SUCCEEDED"
                                         ]
                                     }

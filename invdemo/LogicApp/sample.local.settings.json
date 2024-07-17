@@ -8,7 +8,9 @@
     "WORKFLOWS_RESOURCE_GROUP_NAME": "rdu-lab-workflow-rg",
     "WORKFLOWS_MANAGEMENT_BASE_URI": "https://management.azure.com/",
     "AzureWebJobsFeatureFlags": "EnableMultiLanguageWorker",
-    "AzureFile_connectionString": "DefaultEndpointsProtocol=https;AccountName=[STORAGE-NAME-GOES-HERE];AccountKey=[YOUR-KEY-GOES-HERE];EndpointSuffix=core.windows.net"
-    //e.g.: "AzureFile_connectionString": "DefaultEndpointsProtocol=https;AccountName=secwfstorage;AccountKey=Z3lG/xV4cCBoNPA05PbI0JfGCfeqDVVUfrA2XDqu2cqjWYKau5UWiK58s0WWFraYb54mk4+dzwsp+AStetF8KQ==;EndpointSuffix=core.windows.net"
+    "AzureFile_connectionString": "DefaultEndpointsProtocol=https;AccountName=[STORAGE-NAME-GOES-HERE];AccountKey=[YOUR-KEY-GOES-HERE];EndpointSuffix=core.windows.net",
+    "serviceBus_connectionString":"provide your connection string",
+    "eventGridPublisher_accessKey": "privide your access key",
+    "eventGridPublisher_topicEndpoint": "[endpioint, e.g.: rdu-lab-databus-evgrd.francecentral-1.eventgrid.azure.net]"
   }
 }

@@ -71,11 +71,13 @@ i zapisuje je do Azure Event Grida
 
 ### Deployment do Azure
 - w subskrypcji, do której zamierzasz robić deploymenty, włączyć provider 'Microsoft.OperationalInsights'
+    - sub > settings > resource providers > Microsoft.OperationalInsights > register
 - wykonaj deployment z VSC (wskaż region, resource groupę, itd.)
+    - InvDemo workspace > LogicApp > rmb > deploy to logicApp > new LogicApp (Advanced)
     - Sometimes VS Code will want you to install a C# Dev Kit. If this has been installed, please remove it from the extensions. When C# Dev Kit is installed, it will add ".sln" files to your code project.  Delete these files as they can mess with the build tasks.
     - We have seen a couple situations where the APP_KIND isn't set. It should be set to workflowApp. You can find this setting in the Environment variables section. Set as follows:
     - <b>APP_KIND: workflowApp</b>
-- Sprawdź, że w zmiennych środowiskowych zdeployowanej logi apki masz:
+- Sprawdź, że w zmiennych środowiskowych zdeployowanej logic apki masz:
     - APP_KIND: workflowApp
     - AzureFile_connectionString: DefaultEndpointsProtocol=https;AccountName=[nazwa-az-file-storage];AccountKey=[TWÓJ-KLUCZ];EndpointSuffix=core.windows.net
 - W storage Az File załóż strukturę folderów:
@@ -84,6 +86,13 @@ i zapisuje je do Azure Event Grida
     - powinien pojawić się błąd przy próbie zapisu pliku - W "logu" workflowu krok "Create file" powinien mieć błąd "Forbidden"
     - Teraz należy wpuścić ruch z tej logic apki do Az File (utworzonego w skryptach dostępnych w https://github.com/dudimasta/xat-lap-secure-infra). Skrypty w Infra tworzą i konfigurują dostęp do Az File z VNetu, który jest stworzony w RG zawierającej LogicApp. Po deploymencie logic apki do Azure, podłącz ją pod VNet w tym celu:
     - otwórz Logic Apkę w Azure portal > Networking > Outgoing > Vnet integration, wybierz vnet i subnet utworzony przez skrypty z infry. Uruchom WF ponownie i sprawdź, że w Az File masz nowy plik
+
+- Podobnie przejrzyj i zrób deployment workflowu Invoice_ETL_ToGrid
+    - ustaw connection strings, access keys etc
+    - załóż katalogi w Az File:
+        - invoices/processing/
+        - invoices/processedError/
+        - invoices/processedOK/
 
 ### Demo: Utworzenie nowego workflowu
     
