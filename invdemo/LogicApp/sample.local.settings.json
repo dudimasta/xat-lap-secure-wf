@@ -10,10 +10,10 @@
     "WORKFLOWS_LOCATION_NAME": "polandcentral",
     "WORKFLOWS_MANAGEMENT_BASE_URI": "https://management.azure.com/",
     "AzureFile_connectionString": "DefaultEndpointsProtocol=https;AccountName=rdulabstorage;AccountKey=[account key];EndpointSuffix=core.windows.net",
+    "azFile_share_path": "[az file share name goes here, e.g.: rdu-lab-file-share]",
     "eventGridPublisher_accessKey": "[access key]",
     "eventGridPublisher_topicEndpoint": "https://[Az topic name].[datacenter location].eventgrid.azure.net/api/events",
     "serviceBus_connectionString":"Endpoint=sb://[sb namespace].servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=[shared key]",
-    "serviceBus_queue_name_otherInvoices": "[nazwa kolejki w ASB, np.: fakt_zagraniczne]",
-    "azFile_share_path": "[az file share name goes here, e.g.: rdu-lab-file-share]"
+    "serviceBus_queue_name_otherInvoices": "[nazwa kolejki w ASB, np.: fakt_zagraniczne]"
   }
 }
