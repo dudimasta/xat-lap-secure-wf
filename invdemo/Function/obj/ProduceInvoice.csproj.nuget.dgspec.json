@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\GitHub\\xat-lap-secure-wf\\invdemo\\Function\\ProduceInvoice.csproj": {}
+    "C:\\Wf-2\\xat-lap-secure-wf\\invdemo\\Function\\ProduceInvoice.csproj": {}
   },
   "projects": {
-    "C:\\GitHub\\xat-lap-secure-wf\\invdemo\\Function\\ProduceInvoice.csproj": {
+    "C:\\Wf-2\\xat-lap-secure-wf\\invdemo\\Function\\ProduceInvoice.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\GitHub\\xat-lap-secure-wf\\invdemo\\Function\\ProduceInvoice.csproj",
+        "projectUniqueName": "C:\\Wf-2\\xat-lap-secure-wf\\invdemo\\Function\\ProduceInvoice.csproj",
         "projectName": "ProduceInvoice",
-        "projectPath": "C:\\GitHub\\xat-lap-secure-wf\\invdemo\\Function\\ProduceInvoice.csproj",
+        "projectPath": "C:\\Wf-2\\xat-lap-secure-wf\\invdemo\\Function\\ProduceInvoice.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\GitHub\\xat-lap-secure-wf\\invdemo\\Function\\obj\\",
+        "outputPath": "C:\\Wf-2\\xat-lap-secure-wf\\invdemo\\Function\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

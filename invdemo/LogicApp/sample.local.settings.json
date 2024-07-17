@@ -4,13 +4,16 @@
     "APP_KIND": "workflowapp",
     "FUNCTIONS_WORKER_RUNTIME": "node",
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "WORKFLOWS_TENANT_ID": "4ae9c97c-d931-4a4c-8ceb-a0fca15da4ec",
     "WORKFLOWS_SUBSCRIPTION_ID": "de47847e-1e04-4c18-99de-a11f659d3119",
     "WORKFLOWS_RESOURCE_GROUP_NAME": "rdu-lab-workflow-rg",
+    "WORKFLOWS_LOCATION_NAME": "polandcentral",
     "WORKFLOWS_MANAGEMENT_BASE_URI": "https://management.azure.com/",
-    "AzureWebJobsFeatureFlags": "EnableMultiLanguageWorker",
-    "AzureFile_connectionString": "DefaultEndpointsProtocol=https;AccountName=[STORAGE-NAME-GOES-HERE];AccountKey=[YOUR-KEY-GOES-HERE];EndpointSuffix=core.windows.net",
-    "serviceBus_connectionString":"provide your connection string",
-    "eventGridPublisher_accessKey": "privide your access key",
-    "eventGridPublisher_topicEndpoint": "[endpioint, e.g.: rdu-lab-databus-evgrd.francecentral-1.eventgrid.azure.net]"
+    "AzureFile_connectionString": "DefaultEndpointsProtocol=https;AccountName=rdulabstorage;AccountKey=[account key];EndpointSuffix=core.windows.net",
+    "eventGridPublisher_accessKey": "[access key]",
+    "eventGridPublisher_topicEndpoint": "https://[Az topic name].[datacenter location].eventgrid.azure.net/api/events",
+    "serviceBus_connectionString":"Endpoint=sb://[sb namespace].servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=[shared key]",
+    "serviceBus_queue_name_otherInvoices": "[nazwa kolejki w ASB, np.: fakt_zagraniczne]",
+    "azFile_share_path": "[az file share name goes here, e.g.: rdu-lab-file-share]"
   }
 }

@@ -135,10 +135,11 @@ namespace xat.InvUtils
       Invoice invoice = new Invoice();
       invoice.account_num = theArray[0];
       invoice.invoice_id = theArray[1];
-      string buf = theArray[2];
-      // get first character
-      char c = buf[0];
-      invoice.is_domestic = char.IsNumber(c);
+
+      System.Random rand = new System.Random();
+      int randomInt = rand.Next(0, 2);
+
+      invoice.is_domestic = randomInt == 1;
       invoice.invoice_date = System.DateTime.Now;
 
       // add some lines to the invoice

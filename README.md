@@ -54,14 +54,14 @@ i zapisuje je do Azure Event Grida
     - objects.cs
 - wykonaj <code>dotnet build .\ProduceInvoice.csproj</code> projektu zawierającego kod rozszerzeń (Functions). W wyniku buildu biblioteki zostaną wrzucone do [...]\LogicApp\lib\custom\net472
 - Przejrzyj w designerze workflow PushInvoice
+- uzupełnij plik local.settings.json na bazie przykładu sample.local.settings.json
+    - w przypadku produkcyjnym klucz należałoby pobrać z właściwego (Prod, UAT, Test, Perf itd) key vaulta
 
 ### Uruchom workflow lokalnie
 - wyedytuj workflow PushInvoice w Designerze, w akcji Create File ustaw nazwę Az File, właściwość Folder Path, np "rdu-lab-file-share"
     - w przypadku produkcyjnym, nazwy zasobów powinny być pobierane ze zmiennych a nie hardkodowane
 - w Az File Storage załóż ścieżkę: invoices/incoming/
     - w przypadku produkcyjnym taki element infry powinien być stworzony ze skryptów przygotowujących infrę
-- uzupełnij plik local.settings.json na bazie przykładu sample.local.settings.json
-    - w przypadku produkcyjnym klucz należałoby pobrać z właściwego (Prod, UAT, Test, Perf itd) key vaulta
 - uruchom emulatory Azurite, podaj LogicApp jako folder, gdzie będą przechowywać dane
 - ustaw breakpoint w pliku ProduceInvoice.cs w metodzie run
 - uruchom workflow: Debug > Attach to Logic App

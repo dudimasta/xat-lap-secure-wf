@@ -6,7 +6,7 @@
                 "type": "ServiceProvider",
                 "inputs": {
                     "parameters": {
-                        "folderId": "rdu-lab-file-share/invoices/incoming"
+                        "folderId": "@concat(variables('var_azFile_share_path'),'/invoices/incoming')"
                     },
                     "serviceProviderConfiguration": {
                         "connectionName": "AzureFile",
@@ -14,7 +14,11 @@
                         "serviceProviderId": "/serviceProviders/AzureFile"
                     }
                 },
-                "runAfter": {}
+                "runAfter": {
+                    "Initialize_var_queue_name_otherInvoices": [
+                        "SUCCEEDED"
+                    ]
+                }
             },
             "For_each_incoming": {
                 "type": "foreach",
@@ -25,7 +29,7 @@
                         "inputs": {
                             "parameters": {
                                 "SourceFilePath": "@items('For_each_incoming').path",
-                                "destinationFilePath": "@concat('rdu-lab-file-share/invoices/processing/', items('For_each_incoming').name)",
+                                "destinationFilePath": "@concat(variables('var_azFile_share_path'), '/invoices/processing/', items('For_each_incoming').name)",
                                 "overwrite": true
                             },
                             "serviceProviderConfiguration": {
@@ -64,7 +68,7 @@
                 "type": "ServiceProvider",
                 "inputs": {
                     "parameters": {
-                        "folderId": "rdu-lab-file-share/invoices/processing"
+                        "folderId": "@concat(variables('var_azFile_share_path'), '/invoices/processing')"
                     },
                     "serviceProviderConfiguration": {
                         "connectionName": "AzureFile",
@@ -132,7 +136,7 @@
                         "inputs": {
                             "parameters": {
                                 "SourceFilePath": "@items('For_each_in_processing').path",
-                                "destinationFilePath": "@concat('rdu-lab-file-share/invoices/processedError/', items('For_each_in_processing').name)"
+                                "destinationFilePath": "@concat(variables('var_azFile_share_path'), '/invoices/processedError/', items('For_each_in_processing').name)"
                             },
                             "serviceProviderConfiguration": {
                                 "connectionName": "AzureFile",
@@ -205,7 +209,7 @@
                                 "inputs": {
                                     "parameters": {
                                         "SourceFilePath": "@items('For_each_in_processing').path",
-                                        "destinationFilePath": "@concat('rdu-lab-file-share/invoices/processedOK/', items('For_each_in_processing').name)"
+                                        "destinationFilePath": "@concat(variables('var_azFile_share_path'), '/invoices/processedOK/', items('For_each_in_processing').name)"
                                     },
                                     "serviceProviderConfiguration": {
                                         "connectionName": "AzureFile",
@@ -255,7 +259,7 @@
                                     "type": "ServiceProvider",
                                     "inputs": {
                                         "parameters": {
-                                            "entityName": "other-invoices",
+                                            "entityName": "@variables('var_queue_name_otherInvoices')",
                                             "message": {
                                                 "contentData": "@body('Transform_XML_Invoice_to_CSV')"
                                             }
@@ -277,7 +281,7 @@
                                     "inputs": {
                                         "parameters": {
                                             "SourceFilePath": "@items('For_each_in_processing').path",
-                                            "destinationFilePath": "@concat('rdu-lab-file-share/invoices/processedOK/', items('For_each_in_processing').name)"
+                                            "destinationFilePath": "@concat(variables('var_azFile_share_path'), '/invoices/processedOK/', items('For_each_in_processing').name)"
                                         },
                                         "serviceProviderConfiguration": {
                                             "connectionName": "AzureFile",
@@ -379,6 +383,36 @@
                 },
                 "runAfter": {
                     "Initialize_variable": [
+                        "SUCCEEDED"
+                    ]
+                }
+            },
+            "Initialize_var_azFile_share_path": {
+                "type": "InitializeVariable",
+                "inputs": {
+                    "variables": [
+                        {
+                            "name": "var_azFile_share_path",
+                            "type": "string",
+                            "value": "@{appsetting('azFile_share_path')}"
+                        }
+                    ]
+                },
+                "runAfter": {}
+            },
+            "Initialize_var_queue_name_otherInvoices": {
+                "type": "InitializeVariable",
+                "inputs": {
+                    "variables": [
+                        {
+                            "name": "var_queue_name_otherInvoices",
+                            "type": "string",
+                            "value": "@{appsetting('serviceBus_queue_name_otherInvoices')}"
+                        }
+                    ]
+                },
+                "runAfter": {
+                    "Initialize_var_azFile_share_path": [
                         "SUCCEEDED"
                     ]
                 }
